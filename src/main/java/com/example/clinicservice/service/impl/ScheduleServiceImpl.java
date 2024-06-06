@@ -1,5 +1,6 @@
 package com.example.clinicservice.service.impl;
 
+import com.example.clinicservice.model.Doctor;
 import com.example.clinicservice.model.Person;
 import com.example.clinicservice.model.Schedule;
 import com.example.clinicservice.repository.ScheduleRepository;
@@ -47,4 +48,9 @@ public class ScheduleServiceImpl implements ScheduleService {
     public List<Schedule> getSchedulesByDoctorOrderByDayOfWeek(Person doctor) {
         return scheduleRepository.findAllByDoctorOrderByDayOfWeek(doctor);
     }
+
+    @Override
+    public List<Schedule> findAllByDoctorAndDayOfWeek(Doctor doctor, String day){
+        return scheduleRepository.findAllByDoctorAndDayOfWeek(doctor ,day);
+    };
 }

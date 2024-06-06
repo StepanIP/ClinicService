@@ -67,5 +67,15 @@ public class ProcedureController {
         return new ResponseEntity<>(procedureService.getByProcedureName(
                 (procedureName)), HttpStatus.OK);
     }
+
+    @GetMapping("/search")
+    public ResponseEntity<List<Procedure>> searchProcedures(
+            @RequestParam(value = "name", required = false) String name,
+            @RequestParam(value = "office", required = false) String office) {
+
+        List<Procedure> procedures = procedureService.searchProcedures(name, office);
+        return new ResponseEntity<>(procedures, HttpStatus.OK);
+    }
+
 }
 

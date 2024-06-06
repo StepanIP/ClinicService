@@ -69,7 +69,7 @@ public class AccountController {
             Principal principal) {
         Person person = accountService.getPerson(accountService.loadAccountByEmail(principal.getName()));
         if (person instanceof Patient patient) {
-            return new ResponseEntity<>(String.valueOf(((Patient) person).getFreeServicesLeft()), HttpStatus.OK);
+            return new ResponseEntity<>(String.valueOf(patient.getFreeServicesLeft()), HttpStatus.OK);
         }
         return new ResponseEntity<>(HttpStatus.FORBIDDEN);
     }

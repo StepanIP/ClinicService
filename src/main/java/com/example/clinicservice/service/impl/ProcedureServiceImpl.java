@@ -71,6 +71,18 @@ public class ProcedureServiceImpl implements ProcedureService {
         return procedureRepository.findAllByProcedureNameOrderByProcedureDateAscStartTimeAsc(name);
     }
 
+    public List<Procedure> searchProcedures(String name, String office) {
+        if (name != null && office != null) {
+            return procedureRepository.findAllByProcedureNameAndOfficeOrderByProcedureDateAscStartTimeAsc(name, Integer.parseInt(office));
+        } else if (name != null) {
+            return procedureRepository.findAllByProcedureNameOrderByProcedureDateAscStartTimeAsc(name);
+        } else if (office != null) {
+            return procedureRepository.findAllByOfficeOrderByProcedureDateAscStartTimeAsc(Integer.parseInt(office));
+        } else {
+            return procedureRepository.findAll();
+        }
+    }
+
     @Override
     public List<Procedure> getFreeProcedures(List<Procedure> procedures) {
         List<Procedure> freeProcedures = new ArrayList<>();

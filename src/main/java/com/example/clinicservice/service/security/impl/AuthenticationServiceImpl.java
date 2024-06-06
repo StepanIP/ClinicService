@@ -7,6 +7,7 @@ import com.example.clinicservice.model.Account;
 import com.example.clinicservice.model.Doctor;
 import com.example.clinicservice.model.Patient;
 import com.example.clinicservice.repository.AccountRepository;
+import com.example.clinicservice.repository.DoctorRepository;
 import com.example.clinicservice.repository.PatientRepository;
 import com.example.clinicservice.service.AccountService;
 import com.example.clinicservice.service.security.AuthenticationService;
@@ -14,6 +15,7 @@ import com.example.clinicservice.service.security.JwtService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -23,26 +25,30 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private final AccountRepository accountRepository;
     private final AccountService accountService;
     private final PatientRepository patientRepository;
+    private final DoctorRepository doctorRepository;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
 
     @Override
     public JwtAuthenticationResponse signup(SignUpRequest request) {
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        String encodedPassword = passwordEncoder.encode(request.getPassword());
+
         Account account = Account.builder()
                 .email(request.getEmail())
-                .password(request.getPassword())
+                .password(encodedPassword)
                 .build();
         accountRepository.save(account);
 
-        patientRepository.save(Patient.builder()
-                .patientName(request.getName())
+        doctorRepository.save(Doctor.builder()
+                .doctorName(request.getName())
                 .surname(request.getSurname())
                 .fathersName(request.getFathersName())
                 .account(account)
                 .build()
         );
         var jwt = jwtService.generateToken(account);
-        return JwtAuthenticationResponse.builder().token(jwt).position("patient").build();
+        return JwtAuthenticationResponse.builder().token(jwt).position("doctor").build();
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.example.clinicservice.controller;
 
+import com.example.clinicservice.model.Doctor;
 import com.example.clinicservice.model.Person;
 import com.example.clinicservice.model.Schedule;
 import com.example.clinicservice.service.AccountService;
@@ -24,7 +25,7 @@ public class ScheduleController {
         this.scheduleService = scheduleService;
     }
 
-    @GetMapping
+    @GetMapping("/all")
     public ResponseEntity<List<Schedule>> allSchedules(Principal principal) {
         Person person = accountService.getPerson(accountService.loadAccountByEmail(principal.getName()));
         List<Schedule> list = scheduleService.getSchedulesByDoctorOrderByDayOfWeek(person);
@@ -33,9 +34,9 @@ public class ScheduleController {
     }
 
     @GetMapping("/byDay")
-    public ResponseEntity<List<Schedule>> schedulesByDay(@RequestParam("day") String string, Principal principal) {
-        Person person = accountService.getPerson(accountService.loadAccountByEmail(principal.getName()));
-        List<Schedule> list = scheduleService.getSchedulesByDoctorOrderByDayOfWeek(person);
+    public ResponseEntity<List<Schedule>> schedulesByDay(@RequestParam("day") String day, Principal principal) {
+        Doctor person = (Doctor) accountService.getPerson(accountService.loadAccountByEmail(principal.getName()));
+        List<Schedule> list = scheduleService.findAllByDoctorAndDayOfWeek(person, day);
         list.sort(Comparator.comparing(Schedule::getAppointmentTime));
         return new ResponseEntity<>(list, HttpStatus.OK);
     }

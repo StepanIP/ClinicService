@@ -11,9 +11,9 @@ import java.util.List;
 public interface ProcedureRepository extends JpaRepository<Procedure, Long> {
     List<Procedure> findAllByOrderByOfficeAsc();
 
-    List<Procedure> findAllByProcedureNameOrderByProcedureDateAscStartTimeAsc(String procedureName);
+    List<Procedure> findAllByProcedureNameOrderByProcedureDateAscStartTimeAsc(String name);
 
-//    List<Procedure> findAllByDoctorOrderByProcedureDateAscStartTimeAsc(Doctor doctor);
-//
-//    List<Procedure> findAllByDoctorAndProcedureNameOrderByProcedureDateAscStartTimeAsc(Doctor doctor, String procedureName);
+    List<Procedure> findAllByOfficeOrderByProcedureDateAscStartTimeAsc(int office);
+
+    List<Procedure> findAllByProcedureNameAndOfficeOrderByProcedureDateAscStartTimeAsc(String procedureName, int office);
 }

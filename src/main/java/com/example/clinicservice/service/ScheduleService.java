@@ -1,5 +1,6 @@
 package com.example.clinicservice.service;
 
+import com.example.clinicservice.model.Doctor;
 import com.example.clinicservice.model.Person;
 import com.example.clinicservice.model.Schedule;
 
@@ -12,4 +13,5 @@ public interface ScheduleService {
     void delete(Schedule schedule);
     List<Schedule> getAll();
     List<Schedule> getSchedulesByDoctorOrderByDayOfWeek(Person doctor);
+    List<Schedule> findAllByDoctorAndDayOfWeek(Doctor doctor, String day);
 }
